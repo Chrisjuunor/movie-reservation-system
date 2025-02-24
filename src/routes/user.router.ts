@@ -1,6 +1,6 @@
 import express from "express";
 import { Request, Response } from "express";
-import { registerUser } from "../controllers/user.controller";
+import { loginUser, registerUser } from "../controllers/user.controller";
 
 export const userRouter = express.Router();
 
@@ -10,3 +10,4 @@ userRouter.get("/", async (req: Request, res: Response) => {
 });
 
 userRouter.post("/register", registerUser);
+userRouter.post("/login", loginUser);
