@@ -37,15 +37,39 @@ export const registerUser = async (
 
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    res.status(400).json({ message: "Please provide your credentials" });
+    return;
+  }
+
   try {
-    if (!email || !password) {
-      res.status(400).json({ message: "Please provide your credentials" });
+    const user = await getUserByEmail(email);
+    if (!user) {
+      res.status(404).json({ message: "Invalid email or password" });
       return;
     }
 
-    const login = await getUserByEmail(email);
+    //ensures the user does have a password
+    if (!user.password) {
+      console.error(`User object does not have a password field: ${user}`);
+      res
+        .status(500)
+        .json({ message: "Internal server error: Invalid user data" });
+      return;
+    }
 
-    res.status(200).json(login);
+    console.log("User from database:", user);
+    // console.log("Password from request:", password); --> currrently unnecessary
+
+    const isPassword = await bcrypt.compare(password, user.password);
+    console.log(`Is password valid? ${isPassword}`);
+    if (!isPassword) {
+      res.status(401).json({ message: "Invalid email or password" });
+      return;
+    }
+
+    res.status(200).json(user);
   } catch (err: any) {
     console.error(`Error logging in user ${err}`);
     res.status(500).json({ message: "Unable to log in user!" });

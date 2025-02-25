@@ -20,11 +20,15 @@ export const createUser = async (user: Omit<User, "id">): Promise<User> => {
   return result.rows[0];
 };
 
-export const getUserByEmail = async (email: string) => {
+export const getUserByEmail = async (email: string): Promise<User> => {
   const query = {
-    text: "SELECT * FROM users WHERE email = $1 AND password = $2",
+    text: "SELECT * FROM users WHERE email = $1",
     values: [email],
   };
   const result = await db.query(query);
-  return result.rows[0];
+  const user = result.rows[0];
+  if (!user) {
+    null;
+  }
+  return user as User;
 };
