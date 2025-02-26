@@ -27,8 +27,27 @@ export const getUserByEmail = async (email: string): Promise<User> => {
   };
   const result = await db.query(query);
   const user = result.rows[0];
-  if (!user) {
-    null;
-  }
+
   return user as User;
+};
+
+export const updateUser = async (
+  id: number,
+  user: Omit<User, "id">
+): Promise<User> => {
+  const query = {
+    text: "UDATE users SET username = $1, email = $2, password = $3 WHERE id = $4",
+    values: [user.username, user.email, user.password, id],
+  };
+  const result = await db.query(query);
+  return result.rows[0];
+};
+
+export const deleteUser = async (id: number): Promise<null> => {
+  const query = {
+    text: "DELETE FROM users WHERE id = $1",
+    values: [id],
+  };
+  const result = await db.query(query);
+  return result.rows[0];
 };
