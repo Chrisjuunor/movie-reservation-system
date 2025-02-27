@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { createUser, getUserByEmail, User } from "../models/user.model";
+import {
+  createUser,
+  getUserByEmail,
+  updateUserById,
+  User,
+} from "../models/user.model";
 import bcrypt from "bcrypt";
 
 interface UserBody {
@@ -73,5 +78,41 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   } catch (err: any) {
     console.error(`Error logging in user ${err}`);
     res.status(500).json({ message: "Unable to log in user!" });
+  }
+};
+
+export const updateUser = async (
+  req: Request<{ id: string }, {}, UserBody>,
+  res: Response
+) => {
+  const id: number = parseInt(req.params.id as string);
+  console.log(id);
+  if (isNaN(id)) {
+    res.status(400).json({ message: "Invalid user ID!" });
+    return;
+  }
+  const { username, email, password } = req.body;
+  try {
+    if (!username || !email || !password) {
+      res.status(400).json();
+      return;
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const userUpdate = await updateUserById(id, {
+      username,
+      email,
+      password: hashedPassword,
+    });
+    console.log(userUpdate);
+    if (!userUpdate) {
+      res.status(404).json({ message: `User with ID ${id} not found!` });
+      return;
+    }
+    res.status(200).json(userUpdate);
+  } catch (err: any) {
+    console.error(`Error updating user ${err}`);
+    res.status(500).json({ message: "Unable to update user!" });
   }
 };

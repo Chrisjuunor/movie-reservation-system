@@ -12,12 +12,17 @@ export type User = {
 const pool = new Pool();
 
 export const createUser = async (user: Omit<User, "id">): Promise<User> => {
-  const query = {
-    text: "INSERT INTO users(username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
-    values: [user.username, user.email, user.password, user.role],
-  };
-  const result = await db.query(query);
-  return result.rows[0];
+  try {
+    const query = {
+      text: "INSERT INTO users(username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
+      values: [user.username, user.email, user.password, user.role],
+    };
+    const result = await db.query(query);
+    return result.rows[0];
+  } catch (err: any) {
+    console.error("Error creating user", err);
+    throw new Error("unable to create user");
+  }
 };
 
 export const getUserByEmail = async (email: string): Promise<User> => {
@@ -31,16 +36,24 @@ export const getUserByEmail = async (email: string): Promise<User> => {
   return user as User;
 };
 
-export const updateUser = async (
+export const updateUserById = async (
   id: number,
-  user: Omit<User, "id">
+  user: Omit<User, "id" | "role">
 ): Promise<User> => {
-  const query = {
-    text: "UDATE users SET username = $1, email = $2, password = $3 WHERE id = $4",
-    values: [user.username, user.email, user.password, id],
-  };
-  const result = await db.query(query);
-  return result.rows[0];
+  try {
+    const query = {
+      text: "UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4 RETURNING *",
+      values: [user.username, user.email, user.password, id],
+    };
+    const result = await db.query(query);
+    if (!result) {
+      console.log("No rows were afected!");
+    }
+    return result.rows[0];
+  } catch (err: any) {
+    console.error("Error updating user", err);
+    throw new Error("Unable to update user");
+  }
 };
 
 export const deleteUser = async (id: number): Promise<null> => {
