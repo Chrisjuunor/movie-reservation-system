@@ -62,3 +62,20 @@ export const updateMovieById = async (
     throw new Error("Unable to update movie!");
   }
 };
+
+export const deleteMovieById = async (id: number): Promise<null> => {
+  try {
+    const query = {
+      text: "DELETE FROM movies WHERE id = $1 RETURNING *",
+      values: [id],
+    };
+    const result = await db.query(query);
+    if (!result) {
+      console.log("No rows were deleted!");
+    }
+    return result.rows[0];
+  } catch (err: any) {
+    console.error("Error removing movie", err);
+    throw new Error(`Unable to delete movie with id ${id}`);
+  }
+};
