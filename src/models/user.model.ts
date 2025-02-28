@@ -1,4 +1,3 @@
-import { Pool } from "pg";
 import { db } from "../config/db";
 
 export type User = {
@@ -8,8 +7,6 @@ export type User = {
   password: string;
   role: string;
 };
-
-const pool = new Pool();
 
 export const createUser = async (user: Omit<User, "id">): Promise<User> => {
   try {
