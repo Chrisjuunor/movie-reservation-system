@@ -56,11 +56,15 @@ export const updateUserById = async (
   }
 };
 
-export const deleteUser = async (id: number): Promise<null> => {
+export const deleteUserById = async (id: number): Promise<null> => {
   const query = {
-    text: "DELETE FROM users WHERE id = $1",
+    text: "DELETE FROM users WHERE id = $1 RETURNING *",
     values: [id],
   };
   const result = await db.query(query);
+  if (result.rows.length === 0) {
+    console.log("no rows were deleted!");
+    return null;
+  }
   return result.rows[0];
 };

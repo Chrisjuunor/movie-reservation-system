@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import {
   loginUser,
   registerUser,
+  removeUser,
   updateUser,
 } from "../controllers/user.controller";
 
@@ -16,3 +17,4 @@ userRouter.get("/", async (req: Request, res: Response) => {
 userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
 userRouter.put("/update/:id", updateUser);
+userRouter.delete("/remove/:id", removeUser);

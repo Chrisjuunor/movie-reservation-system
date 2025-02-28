@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   createUser,
+  deleteUserById,
   getUserByEmail,
   updateUserById,
   User,
@@ -114,5 +115,29 @@ export const updateUser = async (
   } catch (err: any) {
     console.error(`Error updating user ${err}`);
     res.status(500).json({ message: "Unable to update user!" });
+  }
+};
+
+export const removeUser = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const id = parseInt(req.params.id as string);
+  if (isNaN(id)) {
+    res.status(400).json({ message: "Invalid user ID!" });
+    return;
+  }
+
+  try {
+    const deleteUser = await deleteUserById(id);
+    if (!deleteUser) {
+      res.status(400).json({ message: "Unable to delete user!" });
+      return;
+    }
+    // console.log("User deleted:", deleteUser);  -->useful during debugging
+    res.status(204).json({ message: "User removed successfully!" });
+  } catch (err: any) {
+    console.error(`Error completing action ${err}`);
+    res.status(500).json({ message: "Unable to delete user!" });
   }
 };
