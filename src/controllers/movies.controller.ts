@@ -51,16 +51,15 @@ export const getMovie = async (req: Request<{ id: string }>, res: Response) => {
 
 export const getMovies = async (req: Request, res: Response) => {
   try {
-    const movies = [];
-    const movie = await getAllMovies();
+    const movies = await getAllMovies();
 
-    if (!movie) {
+    if (!movies) {
       console.log("Unable to get movies!");
       res.status(400).json({ message: "Could not retrieve movie!" });
       return;
     }
 
-    res.status(200).json(movie);
+    res.status(200).json(movies);
   } catch (err: any) {
     console.error(`Error retrieving movies ${err}`);
     res.status(500).json({ message: "Unable to get movies!" });
