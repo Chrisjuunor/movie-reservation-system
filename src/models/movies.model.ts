@@ -27,7 +27,7 @@ export const getMovieById = async (id: number): Promise<Movie> => {
   try {
     const query = {
       text: "SELECT * FROM movies WHERE id = $1",
-      vlaues: [id],
+      values: [id],
     };
     const result = await db.query(query);
 
