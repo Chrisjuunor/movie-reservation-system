@@ -134,7 +134,7 @@ export const removeUser = async (
       res.status(400).json({ message: "Unable to delete user!" });
       return;
     }
-    // console.log("User deleted:", deleteUser);  --> useful during debugging
+    // console.log("User deleted:", deleteUser);  --> auseful during debugging
     res.status(204).json({ message: "User removed successfully!" });
   } catch (err: any) {
     console.error(`Error completing action ${err}`);

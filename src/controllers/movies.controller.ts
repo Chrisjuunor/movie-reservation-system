@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   createMovie,
+  deleteMovieById,
   getAllMovies,
   getMovieById,
   updateMovieById,
@@ -94,12 +95,12 @@ export const updateMovie = async (
 
     //check if movie with id exists in the db
     const movie = await getMovieById(id);
-    if(!movie){
-        console.log(`Movie with id ${id} not found in the database!`);
-        res.status(404).json({message: `Movie with id ${id} not found!`});
-        return;
+    if (!movie) {
+      console.log(`Movie with id ${id} not found in the database!`);
+      res.status(404).json({ message: `Movie with id ${id} not found!` });
+      return;
     }
-    
+
     const update = await updateMovieById(id, {
       title,
       description,
@@ -116,5 +117,34 @@ export const updateMovie = async (
   } catch (err: any) {
     console.error(`Error updating movie ${err}`);
     res.status(500).json({ message: "Unable to update movie!" });
+  }
+};
+
+export const deleteMovie = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const id = parseInt(req.params.id as string);
+  if (isNaN(id)) {
+    res.status(400).json({ message: "Invalid movie ID!" });
+    return;
+  }
+
+  try {
+    const movie = await getMovieById(id);
+    if (!movie) {
+      res.status(404).json({ message: `Movie with id ${id} not found!` });
+      return;
+    }
+
+    const deleteMovie = await deleteMovieById(id);
+    if (!deleteMovie) {
+      res.status(400).json({ message: "Unable to delete movie!" });
+      return;
+    }
+
+    res.status(204).json({ message: "Movie deleted successfully!" });
+  } catch (err: any) {
+    res.status(500).json({ message: "Unable to delete movie!" });
   }
 };
