@@ -42,6 +42,24 @@ export const getMovieById = async (id: number): Promise<Movie> => {
   }
 };
 
+export const getAllMovies = async (): Promise<Movie[]> => {
+  try {
+    const query = {
+      text: "SELECT * FROM movies",
+    };
+    const result = await db.query(query);
+
+    if (!result) {
+      console.log("No rows returned!");
+    }
+    const movies = result.rows as Movie[];
+    return movies;
+  } catch (err: any) {
+    console.error("Error returning movies", err);
+    throw new Error("Unable to get movies!");
+  }
+};
+
 export const updateMovieById = async (
   id: number,
   movie: Omit<Movie, "id">
