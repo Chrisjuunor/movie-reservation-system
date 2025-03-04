@@ -21,3 +21,36 @@ export const createShowtime = async (showtime: Omit<Showtime, "id">) => {
     throw new Error("Unable to add showtime to movie");
   }
 };
+
+export const getShowtimeByMovieId = async (
+  movie_id: number
+): Promise<Showtime[]> => {
+  try {
+    const query = {
+      text: "SELECT * FROM showtimes WHERE movie_id = $1",
+      values: [movie_id],
+    };
+
+    const result = await db.query(query);
+    const showtime = result.rows[0];
+    return showtime as Showtime[];
+  } catch (err: any) {
+    console.error("Error geting movie showtime", err);
+    throw new Error("Unable to get showtime for movie");
+  }
+};
+
+export const deleteShowtimeById = async (id: number): Promise<null> => {
+  try {
+    const query = {
+      text: "DELETE * FROM showtimes WHERE id = $1",
+      value: [id],
+    };
+
+    const result = await db.query(query);
+    return result.rows[0];
+  } catch (err: any) {
+    console.error("Error deleting movie showtime", err);
+    throw new Error("Unable to delete showtime");
+  }
+};
