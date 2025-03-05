@@ -85,7 +85,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
 export const updateUser = async (
   req: Request<{ id: string }, {}, UserBody>,
   res: Response
-) => {
+): Promise<void> => {
   const id: number = parseInt(req.params.id as string);
   console.log(id);
   if (isNaN(id)) {
@@ -121,7 +121,7 @@ export const updateUser = async (
 export const removeUser = async (
   req: Request<{ id: string }>,
   res: Response
-) => {
+): Promise<void> => {
   const id = parseInt(req.params.id as string);
   if (isNaN(id)) {
     res.status(400).json({ message: "Invalid user ID!" });

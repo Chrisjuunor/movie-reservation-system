@@ -10,7 +10,7 @@ import {
 interface movieFields {
   title: string;
   description: string;
-  duration: string;
+  duration: number;
   genre: string;
 }
 
@@ -35,7 +35,10 @@ export const addMovie = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export const getMovie = async (req: Request<{ id: string }>, res: Response) => {
+export const getMovie = async (
+  req: Request<{ id: string }>,
+  res: Response
+): Promise<void> => {
   const id = parseInt(req.params.id as string);
   try {
     if (!id) {
@@ -58,7 +61,7 @@ export const getMovie = async (req: Request<{ id: string }>, res: Response) => {
   }
 };
 
-export const getMovies = async (req: Request, res: Response) => {
+export const getMovies = async (req: Request, res: Response): Promise<void> => {
   try {
     const movies = await getAllMovies();
 
@@ -78,7 +81,7 @@ export const getMovies = async (req: Request, res: Response) => {
 export const updateMovie = async (
   req: Request<{ id: string }, {}, movieFields>,
   res: Response
-) => {
+): Promise<void> => {
   const id = parseInt(req.params.id as string);
   if (isNaN(id)) {
     res.status(400).json({ message: "Invalid movie ID!" });
@@ -123,7 +126,7 @@ export const updateMovie = async (
 export const deleteMovie = async (
   req: Request<{ id: string }>,
   res: Response
-) => {
+): Promise<void> => {
   const id = parseInt(req.params.id as string);
   if (isNaN(id)) {
     res.status(400).json({ message: "Invalid movie ID!" });

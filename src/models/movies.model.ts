@@ -4,7 +4,7 @@ type Movie = {
   id: number;
   title: string;
   description: string;
-  duration: string;
+  duration: number;
   genre: string;
 };
 
@@ -39,6 +39,24 @@ export const getMovieById = async (id: number): Promise<Movie> => {
   } catch (err: any) {
     console.error("Error returning movie", err);
     throw new Error("Unable to get movie!");
+  }
+};
+
+export const getMovieDuration = async (id: number) => {
+  try {
+    const query = {
+      text: "SELECT duration FROM movies WHERE id = $1",
+      value: [id],
+    };
+    const result = await db.query(query);
+    if (!result) {
+      console.log("No rows returned!");
+    }
+    const duration = result.rows[0];
+    return duration;
+  } catch (err: any) {
+    console.error("Error returning movie duration", err);
+    throw new Error("Unable to get duration!");
   }
 };
 
