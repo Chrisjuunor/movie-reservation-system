@@ -46,7 +46,7 @@ export const getMovieDuration = async (id: number) => {
   try {
     const query = {
       text: "SELECT duration FROM movies WHERE id = $1",
-      value: [id],
+      values: [id],
     };
     const result = await db.query(query);
     if (!result) {
