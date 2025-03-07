@@ -7,17 +7,64 @@ export interface Showtime {
   end_time: Date;
 }
 
+// export const createShowtime = async (showtime: Omit<Showtime, "id">) => {
+//   try {
+//     if (
+//       !(showtime.start_time instanceof Date) ||
+//       !(showtime.end_time instanceof Date)
+//     ) {
+//       throw new Error("Invalid start_time or end_time");
+//     }
+
+//     const query = {
+//       text: "INSERT INTO showtimes (movie_id, start_time, end_time) VALUES ($1, $2, $3) RETURNING *",
+//       values: [
+//         showtime.movie_id,
+//         showtime.start_time.toISOString(),
+//         showtime.end_time.toISOString(),
+//       ],
+//     };
+
+//     const result = await db.query(query);
+//     return result.rows[0];
+//   } catch (err: any) {
+//     console.error("Error adding showtime", err);
+//     throw new Error("Unable to add showtime to movie");
+//   }
+// };
+
 export const createShowtime = async (showtime: Omit<Showtime, "id">) => {
   try {
+    // Ensure start_time and end_time are valid Date objects
+    if (
+      !(showtime.start_time instanceof Date) ||
+      isNaN(showtime.start_time.getTime())
+    ) {
+      throw new Error("Invalid start_time");
+    }
+
+    if (
+      !(showtime.end_time instanceof Date) ||
+      isNaN(showtime.end_time.getTime())
+    ) {
+      throw new Error("Invalid end_time");
+    }
+
+    // Convert Date objects to ISO strings (includes time zone)
+    const startTimeISO = showtime.start_time.toISOString();
+    const endTimeISO = showtime.end_time.toISOString();
+
     const query = {
       text: "INSERT INTO showtimes (movie_id, start_time, end_time) VALUES ($1, $2, $3) RETURNING *",
-      values: [showtime.movie_id, showtime.start_time, showtime.end_time],
+      values: [showtime.movie_id, startTimeISO, endTimeISO],
     };
+
+    console.log("Executing query:", query);
 
     const result = await db.query(query);
     return result.rows[0];
   } catch (err: any) {
-    console.error("Error adding showtime", err);
+    console.error("Error adding showtime:", err.message);
     throw new Error("Unable to add showtime to movie");
   }
 };
