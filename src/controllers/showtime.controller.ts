@@ -7,8 +7,19 @@ export const addShowtime = async (
   res: Response
 ): Promise<void> => {
   const { movie_id, start_time } = req.body;
+  console.log("start_time:", start_time);
   if (!movie_id || !start_time) {
     res.status(400).json({ message: "Please enter showtime properties" });
+    return;
+  }
+
+  //extra layer of validation to ensure the tyoe in the request body is correct...
+  const start = new Date(start_time);
+  if (isNaN(start.getTime())) {
+    res.status(400).json({
+      message:
+        "Invalid start_time format. Use ISO 8601 format (e.g., '2023-10-25T18:00:00Z')",
+    });
     return;
   }
   try {
@@ -20,8 +31,7 @@ export const addShowtime = async (
     }
 
     //calculating the movie end_time from the start_time and duration...
-    const start = new Date(start_time);
-    const end = new Date(start.getTime() + duration * 60000); //Multiplying by 60000 because that is the number of milliseconds in a minute and duration as a value is in minutes...
+    const end = new Date(start.getTime() + duration.duration * 60000); //Multiplying by 60000 because that is the number of milliseconds in a minute and duration as a value is in minutes...
 
     const showtime = await createShowtime({
       movie_id,
