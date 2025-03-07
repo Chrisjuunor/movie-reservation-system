@@ -7,32 +7,6 @@ export interface Showtime {
   end_time: Date;
 }
 
-// export const createShowtime = async (showtime: Omit<Showtime, "id">) => {
-//   try {
-//     if (
-//       !(showtime.start_time instanceof Date) ||
-//       !(showtime.end_time instanceof Date)
-//     ) {
-//       throw new Error("Invalid start_time or end_time");
-//     }
-
-//     const query = {
-//       text: "INSERT INTO showtimes (movie_id, start_time, end_time) VALUES ($1, $2, $3) RETURNING *",
-//       values: [
-//         showtime.movie_id,
-//         showtime.start_time.toISOString(),
-//         showtime.end_time.toISOString(),
-//       ],
-//     };
-
-//     const result = await db.query(query);
-//     return result.rows[0];
-//   } catch (err: any) {
-//     console.error("Error adding showtime", err);
-//     throw new Error("Unable to add showtime to movie");
-//   }
-// };
-
 export const createShowtime = async (showtime: Omit<Showtime, "id">) => {
   try {
     // Ensure start_time and end_time are valid Date objects
