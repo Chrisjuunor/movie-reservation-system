@@ -13,7 +13,7 @@ export const addShowtime = async (
     return;
   }
 
-  //extra layer of validation to ensure the tyoe in the request body is correct...
+  //extra layer of validation to ensure the type in the request body is correct...
   const start = new Date(start_time);
   if (isNaN(start.getTime())) {
     res.status(400).json({
