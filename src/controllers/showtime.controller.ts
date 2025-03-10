@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { getMovieDuration } from "../models/movies.model";
-import { createShowtime } from "../models/showtimes.models";
+import {
+  createShowtime,
+  getShowtimeByMovieId,
+} from "../models/showtimes.models";
 
 export const addShowtime = async (
   req: Request,
@@ -47,5 +50,37 @@ export const addShowtime = async (
   } catch (err: any) {
     console.error(`Error adding showtime ${err}`);
     res.status(500).json({ message: "Unable to add/create showtime" });
+  }
+};
+
+export const retrieveShowtime = async (req: Request, res: Response) => {
+  const { movie_id } = req.params;
+  const movieId = parseInt(movie_id, 10);
+  console.log("Movie_id:", movie_id, "Parsed movie_id:", movieId);
+  try {
+    if (isNaN(movieId)) {
+      res.status(400).json({ message: "Invalid movie id" });
+      return;
+    }
+
+    const showtime = await getShowtimeByMovieId(movieId);
+    if (!showtime) {
+      res.status(400).json({ message: "Unable to retrieve movie showtime!" });
+      return;
+    }
+
+    if (showtime.length === 0) {
+      res
+        .status(404)
+        .json({
+          message: `No movie showtimes found for movie with id ${movieId}`,
+        });
+      return;
+    }
+
+    res.status(200).json(showtime);
+  } catch (err: any) {
+    console.error(`Error retrieving showtime ${err}`);
+    res.status(500).json({ message: "Unable to retrieve movie showtime" });
   }
 };

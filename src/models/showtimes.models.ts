@@ -52,9 +52,15 @@ export const getShowtimeByMovieId = async (
       values: [movie_id],
     };
 
+    console.log("Executing query", query);
+
     const result = await db.query(query);
-    const showtime = result.rows[0];
-    return showtime as Showtime[];
+    if (!result) {
+      console.log("No rows returned!");
+    }
+
+    const showtime = result.rows;
+    return showtime;
   } catch (err: any) {
     console.error("Error geting movie showtime", err);
     throw new Error("Unable to get showtime for movie");
