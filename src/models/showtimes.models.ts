@@ -67,14 +67,20 @@ export const getShowtimeByMovieId = async (
   }
 };
 
-export const deleteShowtimeById = async (id: number): Promise<null> => {
+export const deleteShowtimeById = async (id: number) => {
   try {
     const query = {
-      text: "DELETE * FROM showtimes WHERE id = $1",
-      value: [id],
+      text: "DELETE FROM showtimes WHERE id = $1 RETURNING *",
+      values: [id],
     };
+    console.log("Executing query", query);
 
     const result = await db.query(query);
+    if (result.rowCount === 0) {
+      console.log("No rows were deleted!");
+      return null;
+    }
+
     return result.rows[0];
   } catch (err: any) {
     console.error("Error deleting movie showtime", err);

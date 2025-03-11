@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { getMovieDuration } from "../models/movies.model";
 import {
   createShowtime,
+  deleteShowtimeById,
   getShowtimeByMovieId,
 } from "../models/showtimes.models";
 
@@ -53,7 +54,10 @@ export const addShowtime = async (
   }
 };
 
-export const retrieveShowtime = async (req: Request, res: Response) => {
+export const retrieveShowtime = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { movie_id } = req.params;
   const movieId = parseInt(movie_id, 10);
   console.log("Movie_id:", movie_id, "Parsed movie_id:", movieId);
@@ -70,11 +74,9 @@ export const retrieveShowtime = async (req: Request, res: Response) => {
     }
 
     if (showtime.length === 0) {
-      res
-        .status(404)
-        .json({
-          message: `No movie showtimes found for movie with id ${movieId}`,
-        });
+      res.status(404).json({
+        message: `No movie showtimes found for movie with id ${movieId}`,
+      });
       return;
     }
 
@@ -82,5 +84,29 @@ export const retrieveShowtime = async (req: Request, res: Response) => {
   } catch (err: any) {
     console.error(`Error retrieving showtime ${err}`);
     res.status(500).json({ message: "Unable to retrieve movie showtime" });
+  }
+};
+
+export const removeShowtime = async (
+  req: Request<{ id: string }>,
+  res: Response
+): Promise<void> => {
+  const id = parseInt(req.params.id as string);
+  if (isNaN(id)) {
+    res.status(400).json({ message: "Invalid id" });
+    return;
+  }
+
+  try {
+    const removed = await deleteShowtimeById(id);
+    if (!removed) {
+      res.status(400).json({ message: "Showtime not removed!" });
+      return;
+    }
+
+    res.status(204).json({ message: "Showtime successfully removed" });
+  } catch (err: any) {
+    console.error("Error deleting movie showtime", err);
+    res.status(500).json({ message: "Unable to delete movie showtime!" });
   }
 };
