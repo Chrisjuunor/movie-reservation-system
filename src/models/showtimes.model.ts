@@ -9,7 +9,7 @@ export interface Showtime {
 
 export const createShowtime = async (showtime: Omit<Showtime, "id">) => {
   try {
-    // Ensure start_time and end_time are valid Date objects
+    // making sure start_time and end_time are valid Date objects
     if (
       !(showtime.start_time instanceof Date) ||
       isNaN(showtime.start_time.getTime())
@@ -24,7 +24,7 @@ export const createShowtime = async (showtime: Omit<Showtime, "id">) => {
       throw new Error("Invalid end_time");
     }
 
-    // Convert Date objects to ISO strings (includes time zone)
+    // Converting Date objects to ISO strings (including the time zone)
     const startTimeISO = showtime.start_time.toISOString();
     const endTimeISO = showtime.end_time.toISOString();
 
