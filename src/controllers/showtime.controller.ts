@@ -4,7 +4,7 @@ import {
   createShowtime,
   deleteShowtimeById,
   getShowtimeByMovieId,
-} from "../models/showtimes.models";
+} from "../models/showtimes.model";
 
 export const addShowtime = async (
   req: Request,
