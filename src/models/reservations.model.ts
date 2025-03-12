@@ -29,3 +29,18 @@ export const createReservation = async (
     throw new Error("Could not create new reservation");
   }
 };
+
+export const getReservation = async (id: number) => {
+  try {
+    const query = {
+      text: "SELECT * FROM reservation WHERE id = $1",
+      value: [id],
+    };
+
+    const result = await db.query(query);
+    return result.rows[0];
+  } catch (err: any) {
+    console.error("error getting reservation", err);
+    throw new Error("could not get reservation");
+  }
+};
