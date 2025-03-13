@@ -4,7 +4,7 @@ type Reservation = {
   id: number;
   user_id: number;
   showtime_id: number;
-  seat_number: string;
+  seat_number: number;
   status: string;
 };
 
