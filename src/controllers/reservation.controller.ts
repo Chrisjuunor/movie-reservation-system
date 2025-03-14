@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   createReservation,
+  deleteReservation,
   getReservation,
 } from "../models/reservations.model";
 
@@ -51,5 +52,35 @@ export const viewReservation = async (
   } catch (err: any) {
     console.error("Error getting reservation", err);
     res.status(500).json({ message: "Error getting reservation!" });
+  }
+};
+
+export const cancelReservation = async (
+  req: Request<{ id: string }>,
+  res: Response
+) => {
+  const id = parseInt(req.params.id as string);
+  if (isNaN(id)) {
+    res.status(400).json({ message: "Invalid id!" });
+    return;
+  }
+
+  try {
+    const reservation = await getReservation(id);
+    if (!reservation) {
+      res.status(404).json({ message: "Reservation not found!" });
+      return;
+    }
+
+    const cancel = await deleteReservation(id);
+    if (!cancel) {
+      res.status(500).json({ message: "Failed to cancel reservation!" });
+      return;
+    }
+
+    res.status(200).json({ message: "Reservation successfully canceled!" });
+  } catch (err: any) {
+    console.error("Error canceling reservation", err);
+    res.status(500).json({ message: "Error canceling reservation!" });
   }
 };
