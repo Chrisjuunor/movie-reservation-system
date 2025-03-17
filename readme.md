@@ -1,12 +1,12 @@
 # Movie Reservation System
 
-This project focuses on the development of the API for a movie reservation system - which i shall call MoviesLOL, yeah cringe with me.
-The movie reservation system has a couple of important components; the user, the movie, the movie showtime, and the reservation.
-Now, this project is built using the MVC design pattern which means that for every component, there is a corresponding model, controller and supposed route file. This is put in place in order to properly seperate concerns and maintain structure.
+This project focuses on the development of the API for a movie reservation system - which I shall call MoviesLOL, yeah cringe with me.
+The movie reservation system has a couple of essential components; the user, the movie, the movie showtime, and the reservation.
+Now, this project is built using the MVC design pattern which means that for every component, there is a corresponding model, controller, and supposed route file. This is put in place in order to properly separate concerns and maintain structure.
 
 ## Content
 
-- [Movie Reservation System](#movie-reservation-system)
+- [Introduction](#movie-reservation-system)
   - [Content](#content)
   - [Description](#description)
     - [User:](#user)
@@ -46,8 +46,8 @@ The showtime simply tells what time the movies are to air. It is also controlled
 
 Reservations are made by the users. Basically, the user (regular) reserves a movie showtime for the airing of his movie of choice. The user can also cancel his reservation if he so chooses.
 
-Each of the afore mentioned components double as entities in a postgresql database and have relating route files which you can test out.
-The project is built using typescript, express and postgresql for database interactions.
+Each of the afore mentioned components double as entities in a postgresql database and have relating route files that you can test out.
+The project is built using typescript, express, and postgresql for database interactions.
 
 ## Installation
 
@@ -69,7 +69,7 @@ To run this project, run
 OR
 `npm run dev` to run the project in watch mode.
 
-All the endpoints are laid out in their respective router files, I recommend checking out with an API tester (like postman or insomnia)
+All the endpoints are laid out in their respective router files, I recommend checking out with an API tester (like Postman or Insomnia)
 
 ## Contributing
 
