@@ -6,7 +6,7 @@ Now, this project is built using the MVC design pattern which means that for eve
 
 ## Content
 
-- [Movie Reservation System](#movie-reservation-system)
+- [Introduction](#movie-reservation-system)
   - [Content](#content)
   - [Description](#description)
     - [User:](#user)
