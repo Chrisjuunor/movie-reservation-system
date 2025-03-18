@@ -6,7 +6,7 @@ Now, this project is built using the MVC design pattern which means that for eve
 
 ## Content
 
-- [Introduction](#movie-reservation-system)
+- [Movie Reservation System](#movie-reservation-system)
   - [Content](#content)
   - [Description](#description)
     - [User:](#user)
@@ -19,6 +19,7 @@ Now, this project is built using the MVC design pattern which means that for eve
   - [Usage](#usage)
   - [Contributing](#contributing)
   - [Contact](#contact)
+  - [Project URL](#project-url)
 
 ## Description
 
@@ -83,3 +84,7 @@ A little help from smart persons such as you would be much appreciated. Do feel 
 ## Contact
 
 Reach out at chinonsoigweic@gmail.com if you have any queries
+
+## Project URL
+
+https://roadmap.sh/projects/movie-reservation-system
