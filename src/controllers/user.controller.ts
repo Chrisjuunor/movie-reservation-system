@@ -7,6 +7,7 @@ import {
   User,
 } from "../models/user.model";
 import bcrypt from "bcrypt";
+import { generateToken } from "../utils/jwt.utils";
 
 interface UserBody {
   username: string;
@@ -75,7 +76,9 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    res.status(200).json(user);
+    const token = generateToken({ id: user.id, email: user.email });
+
+    res.status(200).json({ message: "Login successfull", user, token });
   } catch (err: any) {
     console.error(`Error logging in user ${err}`);
     res.status(500).json({ message: "Unable to log in user!" });
