@@ -6,6 +6,7 @@ import {
   removeUser,
   updateUser,
 } from "../controllers/user.controller";
+import { authenticateToken } from "../middleware/auth.middle";
 
 export const userRouter = express.Router();
 
@@ -16,5 +17,5 @@ userRouter.get("/", async (req: Request, res: Response) => {
 
 userRouter.post("/register", registerUser);
 userRouter.post("/login", loginUser);
-userRouter.put("/update/:id", updateUser);
-userRouter.delete("/remove/:id", removeUser);
+userRouter.put("/update/:id", authenticateToken, updateUser);
+userRouter.delete("/remove/:id", authenticateToken, removeUser);
