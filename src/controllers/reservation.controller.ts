@@ -35,14 +35,14 @@ export const viewReservation = async (
   req: Request<{ id: string }>,
   res: Response
 ) => {
-  const id = parseInt(req.params.id as string);
-  if (isNaN(id)) {
+  const reservationId = parseInt(req.params.id as string);
+  if (isNaN(reservationId)) {
     res.status(400).json({ message: "Invalid reservation id" });
     return;
   }
 
   try {
-    const reservation = await getReservation(id);
+    const reservation = await getReservation(reservationId);
     if (!reservation) {
       res.status(404).json({ message: "Reservation not found!" });
       return;
